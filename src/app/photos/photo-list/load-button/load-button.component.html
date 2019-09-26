@@ -1,0 +1,9 @@
+<ng-container *ngIf="temMais; else elseTemplate">
+  <div class="text-center">
+    <button class="btn btn-primary">Load more</button>
+  </div>
+</ng-container>
+<ng-template #elseTemplate>
+  <p class="text-center text-muted">No more data to load</p>
+</ng-template>
+

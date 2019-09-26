@@ -1,8 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Photo } from '../../photo/photo';
-import { PhotosModule } from '../../photos.module';
-import { RelativeInjectorLocationFlags } from '@angular/core/src/render3/interfaces/injector';
 
 @Component({
   selector: 'app-photos',
@@ -16,7 +14,7 @@ export class PhotosComponent implements OnChanges {
 
   constructor() { }
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.photos) {
+    if (changes.photos) {
       this.rows = this.agrupaColunas(this.photos);
     }
   }
