@@ -12,7 +12,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private UserService: UserService
+    private userService: UserService
   ) { }
 
   authenticate(userName: string, password: string) {
@@ -24,8 +24,7 @@ export class AuthService {
     .pipe(
       tap(res => {
         const authToken = res.headers.get('x-access-token');
-        this.UserService.setToken(authToken);
-        console.log(`User ${userName} authenticated with token ${authToken}`);
+        this.userService.setToken(authToken);
       })
     );
   }
