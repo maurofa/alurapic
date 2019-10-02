@@ -1,24 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { lowerCaseValidator } from 'src/app/shared/validators/lower-case.validator';
 import { UserNotTakenValidatorService } from './user-not-taken-validator.service';
 import { NewUser } from './new-user';
 import { SignupService } from './signup.service';
 import { Router } from '@angular/router';
+import { PlatformDetectorService } from 'src/app/core/platform-detector/platform-detector.service';
 
 @Component({
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
+  providers: [ UserNotTakenValidatorService ]
 })
 export class SignupComponent implements OnInit {
 
   private signupForm: FormGroup;
+  @ViewChild('emailInput') emailInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private fb: FormBuilder,
     private userNotTakenValidatorService: UserNotTakenValidatorService,
     private signupService: SignupService,
-    private router: Router
+    private router: Router,
+    private platformDetectorService: PlatformDetectorService
   ) { }
 
   ngOnInit() {
@@ -53,6 +57,9 @@ export class SignupComponent implements OnInit {
         ]
       ]
     });
+    // tslint:disable-next-line: no-unused-expression
+    this.platformDetectorService.isPlatformBrowser() &&
+      this.emailInput.nativeElement.focus();
   }
 
   signup() {
@@ -62,7 +69,12 @@ export class SignupComponent implements OnInit {
         alert('Usuario cadastrado com sucesso!');
         this.router.navigate(['']);
       },
-      err => console.log(err.message));
+      err => {
+        // tslint:disable-next-line: no-unused-expression
+        this.platformDetectorService.isPlatformBrowser() &&
+          this.emailInput.nativeElement.focus();
+        console.log(err.message);
+      });
   }
 
 }

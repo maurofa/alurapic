@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { PhotoListModule } from './photo-list/photo-list.module';
 import { PhotoFormModule } from './photo-form/photo-form.module';
+import { PhotoService } from './photo.service';
 
 @NgModule({
   imports: [
@@ -12,6 +13,6 @@ import { PhotoFormModule } from './photo-form/photo-form.module';
     PhotoListModule,
     PhotoFormModule
   ],
-  exports: [  ]
+  providers: [ PhotoService ]
 })
 export class PhotosModule { }

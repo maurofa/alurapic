@@ -4,7 +4,7 @@ import { Photo } from './photo/photo';
 
 const API = 'http://localhost:3000';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 
 export class PhotoService {
 
