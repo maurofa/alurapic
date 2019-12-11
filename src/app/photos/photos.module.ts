@@ -13,6 +13,7 @@ import { PhotoService } from './photo.service';
     PhotoListModule,
     PhotoFormModule
   ],
-  providers: [ PhotoService ]
+  providers: [ PhotoService ],
+  declarations: []
 })
 export class PhotosModule { }

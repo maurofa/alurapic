@@ -15,7 +15,7 @@ import { PlatformDetectorService } from 'src/app/core/platform-detector/platform
 export class SignupComponent implements OnInit {
 
   private signupForm: FormGroup;
-  @ViewChild('emailInput') emailInput: ElementRef<HTMLInputElement>;
+  @ViewChild('emailInput', { static: false }) emailInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private fb: FormBuilder,
