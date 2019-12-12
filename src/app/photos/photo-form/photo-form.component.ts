@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 import { PhotoService } from '../photo.service';
 import { AlertService } from 'src/app/shared/components/alert/alert.service';
 import { UserService } from 'src/app/core/user/user.service';
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-photo-form',
