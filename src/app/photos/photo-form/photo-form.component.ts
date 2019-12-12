@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { PhotoService } from '../photo.service';
 import { AlertService } from 'src/app/shared/components/alert/alert.service';
 import { UserService } from 'src/app/core/user/user.service';
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-photo-form',
@@ -15,6 +17,8 @@ export class PhotoFormComponent implements OnInit {
   photoForm: FormGroup;
   file: File;
   preview: string;
+  percentDone = 0;
+
   constructor(
     private fb: FormBuilder,
     private photoService: PhotoService,
@@ -35,14 +39,18 @@ export class PhotoFormComponent implements OnInit {
     const description = this.photoForm.get('description').value;
     const allowComments = this.photoForm.get('allowComments').value;
     this.photoService.upload(description, allowComments, this.file)
+        .pipe(finalize(() => this.router.navigate(['/user', this.userService.getUserName()])))
         .subscribe(
-          () => {
-            this.alertService.success('Foto adicionada com sucesso!', true);
-            this.router.navigate(['/user', this.userService.getUserName()]);
+          (event: HttpEvent<any>) => {
+            if(event.type == HttpEventType.UploadProgress) {
+              this.percentDone = Math.round(100 * event.loaded / event.total)
+            } else if(event instanceof HttpResponse) {
+              this.alertService.success('Foto adicionada com sucesso!', true);
+            }
           },
           err => {
             console.log(err);
-            this.alertService.warning('Não foi possível incluir a foto.');
+            this.alertService.warning('Não foi possível incluir a foto.', true);
           }
         );
   }
