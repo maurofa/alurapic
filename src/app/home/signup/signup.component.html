@@ -1,52 +1,52 @@
-<form [formGroup]="signupForm" class="form mt-4" (submit)="signup()">
+<form #form="ngForm" [formGroup]="signupForm" class="form mt-4" (submit)="signup()">
     <div class="form-group">
         <input #emailInput formControlName="email" class="form-control" placeholder="email" autofocus>
         <app-vmessage
-            *ngIf="signupForm.get('email').errors?.required"
-            text="Email is required!">
+            *ngIf="signupForm.get('email').errors?.required && (form.submitted || signupForm.get('email').touched)"
+            text="Email é obrigatório!">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('email').errors?.email"
-            text="Invalid e-mail">
+            text="Email inválido!">
         </app-vmessage>
     </div>
 
     <div class="form-group">
         <input formControlName="fullName" class="form-control" placeholder="full name">
         <app-vmessage
-            *ngIf="signupForm.get('fullName').errors?.required"
-            text="Full name is required!">
+            *ngIf="signupForm.get('fullName').errors?.required && (form.submitted || signupForm.get('fullName').touched)"
+            text="Nome completo é obrigatório!">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('fullName').errors?.minlength"
-            text="Minimum length is 2">
+            text="Tamanho mínimo é 2">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('fullName').errors?.maxlength"
-            text="Maximum length is 40">
+            text="Tamanho máximo é 40">
         </app-vmessage>
     </div>
 
     <div class="form-group">
         <input formControlName="userName" class="form-control" placeholder="user name">
         <app-vmessage
-            *ngIf="signupForm.get('userName').errors?.required"
-            text="Username is required!">
+            *ngIf="signupForm.get('userName').errors?.required && (form.submitted || signupForm.get('userName').touched)"
+            text="Username é obrigatório!">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('userName').errors?.minlength"
-            text="Minimum length is 2">
+            text="Tamanho mínimo é 2">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('userName').errors?.maxlength"
-            text="Maximum length is 30">
+            text="Tamanho máximo é 30">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('userName').errors?.lowerCase"
-            text="Must be lower case">
+            text="Você precisa usar letras minúsculas no username">
         </app-vmessage>
         <app-vmessage
-            text="Username already taken"
+            text="Username já está sendo utilizado"
             *ngIf="signupForm.get('userName').errors?.userNameTaken">
         </app-vmessage>
         <small *ngIf="signupForm.get('userName').valid" class="text-success">Usuário Disponível!</small>
@@ -55,24 +55,27 @@
     <div class="form-group">
         <input formControlName="password" type="password" class="form-control" placeholder="password">
         <app-vmessage
-            *ngIf="signupForm.get('password').errors?.required"
-            text="Password is required!">
+            *ngIf="signupForm.get('password').errors?.required && (form.submitted || signupForm.get('password').touched)"
+            text="Password é obrigatório!">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('password').errors?.minlength"
-            text="Minimum length is 8">
+            text="Tamanho mínimo é 8">
         </app-vmessage>
         <app-vmessage
             *ngIf="signupForm.get('password').errors?.maxlength"
-            text="Maximum length is 14">
+            text="Tamanho máximo é 14">
+        </app-vmessage>
+        <app-vmessage
+            *ngIf="signupForm.errors?.userNamePassword"
+            text="A senha não pode ser igual ao username.">
         </app-vmessage>
     </div>
 
-    <button 
-        [disabled]="signupForm.invalid || signupForm.pending" 
+    <button
         class="btn btn-primary btn-block">
             Register
     </button>
 
-    <p>Already a user? <a [routerLink]="['']">Sign In!</a></p>
+    <p>Usuário já cadastrado? <a [routerLink]="['']">Sign In!</a></p>
 </form>

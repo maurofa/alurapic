@@ -63,7 +63,7 @@ export class PhotoService {
     return this.http.post(API_URL + '/photos/' + photoId + '/like', {}, {observe: 'response'})
       .pipe(map(res => true))
       .pipe(catchError(err => {
-        return err.status == '304' ? of(false) : throwError(err);
+        return err.status === '304' ? of(false) : throwError(err);
       }));
   }
 }

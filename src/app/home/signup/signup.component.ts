@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { lowerCaseValidator } from 'src/app/shared/validators/lower-case.validator';
 import { UserNotTakenValidatorService } from './user-not-taken-validator.service';
 import { NewUser } from './new-user';
 import { SignupService } from './signup.service';
-import { Router } from '@angular/router';
 import { PlatformDetectorService } from 'src/app/core/platform-detector/platform-detector.service';
+import { userNamePassword } from './username-password.validator';
 
 @Component({
   templateUrl: './signup.component.html',
@@ -15,7 +17,7 @@ import { PlatformDetectorService } from 'src/app/core/platform-detector/platform
 export class SignupComponent implements OnInit {
 
   private signupForm: FormGroup;
-  @ViewChild('emailInput', { static: false }) emailInput: ElementRef<HTMLInputElement>;
+  @ViewChild('emailInput', { static: true }) emailInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +58,9 @@ export class SignupComponent implements OnInit {
           Validators.maxLength(14)
         ]
       ]
+    },
+    {
+      validator: userNamePassword
     });
     // tslint:disable-next-line: no-unused-expression
     this.platformDetectorService.isPlatformBrowser() &&
@@ -63,18 +68,20 @@ export class SignupComponent implements OnInit {
   }
 
   signup() {
-    const newUser = this.signupForm.getRawValue() as NewUser;
-    this.signupService.signup(newUser)
-      .subscribe(() => {
-        alert('Usuario cadastrado com sucesso!');
-        this.router.navigate(['']);
-      },
-      err => {
-        // tslint:disable-next-line: no-unused-expression
-        this.platformDetectorService.isPlatformBrowser() &&
-          this.emailInput.nativeElement.focus();
-        console.log(err.message);
-      });
+    if(this.signupForm.valid && !this.signupForm.pending) {
+      const newUser = this.signupForm.getRawValue() as NewUser;
+      this.signupService.signup(newUser)
+        .subscribe(() => {
+          alert('Usuario cadastrado com sucesso!');
+          this.router.navigate(['']);
+        },
+        err => {
+          // tslint:disable-next-line: no-unused-expression
+          this.platformDetectorService.isPlatformBrowser() &&
+            this.emailInput.nativeElement.focus();
+          console.log(err.message);
+        });
+    }
   }
 
 }
